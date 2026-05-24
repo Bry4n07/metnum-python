@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}Calculadora{% endblock %}
+
+{% block content %}
+<section class="calculator-hero">
+    <div class="container">
+        <p class="eyebrow">Calculadora única</p>
+        <h1>Encuentra raíces y revisa cada iteración</h1>
+        <p>Selecciona un método; el formulario adapta sus datos y el backend devuelve el cálculo en JSON.</p>
+    </div>
+</section>
+
+<section class="calculator-section">
+    <div class="container">
+        <div class="workbench">
+            <aside class="form-panel card">
+                <div class="card-heading">
+                    <h2>Parámetros</h2>
+                    <span class="phase-pill">Fase 1</span>
+                </div>
+                <form id="calculation-form">
+                    <label class="field">
+                        <span>Método</span>
+                        <select id="method" name="method">
+                            <optgroup label="Métodos cerrados">
+                                <option value="bisection">Bisección</option>
+                                <option value="false_position">Regla Falsa</option>
+                            </optgroup>
+                            <optgroup label="Métodos abiertos (próxima fase)">
+                                <option disabled>Newton-Raphson</option>
+                                <option disabled>Secante</option>
+                                <option disabled>Raíces Múltiples</option>
+                            </optgroup>
+                        </select>
+                    </label>
+
+                    <div class="method-description" id="method-description"></div>
+
+                    <label class="field">
+                        <span>Función f(x)</span>
+                        <input id="function" name="function" type="text" value="x^3 - x - 2" required autocomplete="off">
+                        <small>Usa: sin(x), cos(x), tan(x), sqrt(x), log(x), exp(x), x^2 o pow(x,2).</small>
+                    </label>
+
+                    <div class="input-grid" id="dynamic-fields"></div>
+
+                    <div class="input-grid">
+                        <label class="field">
+                            <span>Tolerancia</span>
+                            <input id="tolerance" name="tolerance" type="number" value="0.001" min="0.000000001" step="any">
+                        </label>
+                        <label class="field">
+                            <span>Máx. iteraciones</span>
+                            <input id="max_iterations" name="max_iterations" type="number" value="100" min="1" max="1000" step="1">
+                        </label>
+                    </div>
+
+                    <button class="button primary calculate-button" type="submit" id="submit-button">
+                        Calcular raíz
+                    </button>
+                </form>
+            </aside>
+
+            <div class="result-column">
+                <section class="result-panel card" aria-live="polite">
+                    <div class="card-heading">
+                        <h2>Resultado</h2>
+                        <span id="result-badge" class="status-badge neutral">Sin cálculo</span>
+                    </div>
+                    <div id="result-summary" class="empty-state">
+                        Ingresa los datos y presiona <strong>Calcular raíz</strong>.
+                    </div>
+                </section>
+
+                <section class="chart-panel card">
+                    <div class="card-heading">
+                        <h2>Gráfica de f(x)</h2>
+                        <span class="muted">Chart.js</span>
+                    </div>
+                    <div id="chart-empty" class="empty-chart">La gráfica aparecerá después de calcular.</div>
+                    <canvas id="function-chart" hidden aria-label="Gráfica de la función"></canvas>
+                </section>
+            </div>
+        </div>
+
+        <section class="steps-panel card">
+            <div class="card-heading">
+                <h2>Tabla de iteraciones</h2>
+                <span id="steps-count" class="muted">0 filas</span>
+            </div>
+            <div class="table-wrapper">
+                <table id="steps-table">
+                    <thead></thead>
+                    <tbody>
+                        <tr class="placeholder-row"><td>Aún no hay iteraciones para mostrar.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js"></script>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% endblock %}
+

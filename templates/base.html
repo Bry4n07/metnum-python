@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}MetNum{% endblock %} | Métodos Numéricos</title>
+    <meta name="description" content="Calculadora interactiva de métodos numéricos desarrollada con Flask.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header class="site-header">
+        <nav class="nav container" aria-label="Principal">
+            <a href="{{ url_for('home') }}" class="brand">
+                <span class="brand-mark">M</span>
+                <span>MetNum <small>Python</small></span>
+            </a>
+            <div class="nav-links">
+                <a class="{{ 'active' if request.endpoint == 'home' else '' }}" href="{{ url_for('home') }}">Home</a>
+                <a class="{{ 'active' if request.endpoint == 'calculator' else '' }}" href="{{ url_for('calculator') }}">Calculadora</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-row">
+            <p>Proyecto de Métodos Numéricos · Flask + SymPy + Chart.js</p>
+            <p>Primera fase: métodos cerrados</p>
+        </div>
+    </footer>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>
+

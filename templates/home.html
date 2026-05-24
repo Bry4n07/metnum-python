@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container hero-grid">
+        <div class="hero-copy">
+            <p class="eyebrow">Métodos numéricos interactivos</p>
+            <h1>Calcula raíces con claridad, iteración por iteración.</h1>
+            <p class="hero-lead">
+                Una nueva versión en Python y Flask que mantiene la lógica de cálculo
+                del proyecto original y presenta cada paso de forma visual.
+            </p>
+            <div class="hero-actions">
+                <a class="button primary" href="{{ url_for('calculator') }}">Abrir calculadora</a>
+                <a class="button secondary" href="#metodos">Ver métodos</a>
+            </div>
+        </div>
+        <div class="hero-panel" aria-label="Vista previa de iteraciones">
+            <div class="panel-header">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <strong>Bisección</strong>
+            </div>
+            <p class="function-chip">f(x) = x³ - x - 2</p>
+            <div class="preview-root">
+                <span>Raíz aproximada</span>
+                <strong>1.5205078125</strong>
+            </div>
+            <div class="preview-bars">
+                <span style="--width: 100%"></span>
+                <span style="--width: 66%"></span>
+                <span style="--width: 42%"></span>
+                <span style="--width: 20%"></span>
+            </div>
+            <p class="preview-note">T ≤ 0.001 en 11 iteraciones</p>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="metodos">
+    <div class="container">
+        <div class="section-heading">
+            <div>
+                <p class="eyebrow">Métodos disponibles</p>
+                <h2>Métodos cerrados</h2>
+            </div>
+            <p>Parten de un intervalo donde la función presenta cambio de signo.</p>
+        </div>
+        <div class="method-grid">
+            <article class="method-card available">
+                <span class="tag">Disponible</span>
+                <h3>Bisección</h3>
+                <p>Divide el intervalo a la mitad y conserva el tramo que contiene el cambio de signo.</p>
+                <p class="formula">xr = (a + b) / 2</p>
+                <a href="{{ url_for('calculator') }}?method=bisection">Calcular ahora <span>→</span></a>
+            </article>
+            <article class="method-card available">
+                <span class="tag">Disponible</span>
+                <h3>Regla Falsa</h3>
+                <p>Traza la secante entre los extremos para producir una aproximación interpolada.</p>
+                <p class="formula">xr = (a·f(b) - b·f(a)) / (f(b) - f(a))</p>
+                <a href="{{ url_for('calculator') }}?method=false_position">Calcular ahora <span>→</span></a>
+            </article>
+        </div>
+    </div>
+</section>
+
+<section class="section open-methods">
+    <div class="container">
+        <div class="section-heading compact">
+            <div>
+                <p class="eyebrow">Próxima etapa</p>
+                <h2>Métodos abiertos</h2>
+            </div>
+            <p>Se incorporarán tras verificar la equivalencia de la primera fase.</p>
+        </div>
+        <div class="upcoming-grid">
+            <article class="upcoming-card"><span>Próximamente</span><h3>Newton-Raphson</h3></article>
+            <article class="upcoming-card"><span>Próximamente</span><h3>Secante</h3></article>
+            <article class="upcoming-card"><span>Próximamente</span><h3>Raíces Múltiples</h3></article>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
