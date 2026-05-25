@@ -2,86 +2,156 @@
 {% block title %}Inicio{% endblock %}
 
 {% block content %}
-<section class="hero">
-    <div class="container hero-grid">
-        <div class="hero-copy">
-            <p class="eyebrow">Métodos numéricos interactivos</p>
-            <h1>Calcula raíces con claridad, iteración por iteración.</h1>
-            <p class="hero-lead">
-                Una nueva versión en Python y Flask que mantiene la lógica de cálculo
-                del proyecto original y presenta cada paso de forma visual.
+<section class="landing">
+    <div class="container landing-grid">
+        <div class="landing-copy">
+            <p class="kicker">Laboratorio numérico</p>
+            <h1>Convierte datos en resultados comprensibles.</h1>
+            <p class="landing-lead">
+                Explora raíces e interpolaciones con una tabla clara de cada cálculo.
+                Ingresa tus datos, elige el método y revisa el procedimiento.
             </p>
-            <div class="hero-actions">
-                <a class="button primary" href="{{ url_for('calculator') }}">Abrir calculadora</a>
-                <a class="button secondary" href="#metodos">Ver métodos</a>
+            <div class="landing-actions">
+                <a class="button primary" href="{{ url_for('calculator') }}">Comenzar cálculo</a>
+                <a class="button ghost" href="#metodos">Explorar métodos</a>
+            </div>
+            <div class="method-pills" aria-label="Métodos activos">
+                <span>Bisección</span>
+                <span>Regla Falsa</span>
+                <span>Newton</span>
+                <span>Secante</span>
+                <span>Müller</span>
+                <span>Raíces Múltiples</span>
+                <span>Interpolación Lineal</span>
+                <span>Interpolación Lagrange</span>
             </div>
         </div>
-        <div class="hero-panel" aria-label="Vista previa de iteraciones">
-            <div class="panel-header">
-                <span class="dot"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
+
+        <aside class="calculation-sheet" aria-label="Ejemplo de resultado">
+            <div class="sheet-heading">
+                <span>Ejemplo resuelto</span>
                 <strong>Bisección</strong>
             </div>
-            <p class="function-chip">f(x) = x³ - x - 2</p>
-            <div class="preview-root">
+            <p class="sheet-function">f(x) = x³ - x - 2</p>
+            <div class="sheet-values">
+                <div><span>a</span><strong>0</strong></div>
+                <div><span>b</span><strong>2</strong></div>
+                <div><span>Tol.</span><strong>0.001</strong></div>
+            </div>
+            <div class="sheet-answer">
                 <span>Raíz aproximada</span>
-                <strong>1.5205078125</strong>
+                <strong>1.5205</strong>
+                <p>11 iteraciones · T = 0.001</p>
             </div>
-            <div class="preview-bars">
-                <span style="--width: 100%"></span>
-                <span style="--width: 66%"></span>
-                <span style="--width: 42%"></span>
-                <span style="--width: 20%"></span>
-            </div>
-            <p class="preview-note">T ≤ 0.001 en 11 iteraciones</p>
-        </div>
+        </aside>
     </div>
 </section>
 
-<section class="section" id="metodos">
-    <div class="container">
-        <div class="section-heading">
-            <div>
-                <p class="eyebrow">Métodos disponibles</p>
-                <h2>Métodos cerrados</h2>
-            </div>
-            <p>Parten de un intervalo donde la función presenta cambio de signo.</p>
+<section class="catalog" id="metodos">
+    <div class="container catalog-grid">
+        <div class="catalog-intro">
+            <p class="kicker">Herramientas</p>
+            <h2>Métodos disponibles</h2>
+            <p>Compara métodos para aproximar raíces e interpolar valores paso a paso.</p>
         </div>
-        <div class="method-grid">
-            <article class="method-card available">
-                <span class="tag">Disponible</span>
-                <h3>Bisección</h3>
-                <p>Divide el intervalo a la mitad y conserva el tramo que contiene el cambio de signo.</p>
-                <p class="formula">xr = (a + b) / 2</p>
-                <a href="{{ url_for('calculator') }}?method=bisection">Calcular ahora <span>→</span></a>
+        <div class="method-list">
+            <article class="method-row">
+                <span class="method-number">01</span>
+                <div>
+                    <p class="method-type">Método cerrado</p>
+                    <h3>Bisección</h3>
+                    <p>Reduce el intervalo a mitades sucesivas y conserva el segmento que contiene la raíz.</p>
+                </div>
+                <div class="method-action">
+                    <code>xr = (a + b) / 2</code>
+                    <a href="{{ url_for('calculator') }}?method=bisection">Usar método</a>
+                </div>
             </article>
-            <article class="method-card available">
-                <span class="tag">Disponible</span>
-                <h3>Regla Falsa</h3>
-                <p>Traza la secante entre los extremos para producir una aproximación interpolada.</p>
-                <p class="formula">xr = (a·f(b) - b·f(a)) / (f(b) - f(a))</p>
-                <a href="{{ url_for('calculator') }}?method=false_position">Calcular ahora <span>→</span></a>
+            <article class="method-row">
+                <span class="method-number">02</span>
+                <div>
+                    <p class="method-type">Método cerrado</p>
+                    <h3>Regla Falsa</h3>
+                    <p>Interpola una secante entre los extremos para estimar el siguiente valor de raíz.</p>
+                </div>
+                <div class="method-action">
+                    <code>xr = (a·f(b) - b·f(a)) / (f(b) - f(a))</code>
+                    <a href="{{ url_for('calculator') }}?method=false_position">Usar método</a>
+                </div>
             </article>
-        </div>
-    </div>
-</section>
-
-<section class="section open-methods">
-    <div class="container">
-        <div class="section-heading compact">
-            <div>
-                <p class="eyebrow">Próxima etapa</p>
-                <h2>Métodos abiertos</h2>
-            </div>
-            <p>Se incorporarán tras verificar la equivalencia de la primera fase.</p>
-        </div>
-        <div class="upcoming-grid">
-            <article class="upcoming-card"><span>Próximamente</span><h3>Newton-Raphson</h3></article>
-            <article class="upcoming-card"><span>Próximamente</span><h3>Secante</h3></article>
-            <article class="upcoming-card"><span>Próximamente</span><h3>Raíces Múltiples</h3></article>
+            <article class="method-row">
+                <span class="method-number">03</span>
+                <div>
+                    <p class="method-type">Método abierto</p>
+                    <h3>Newton</h3>
+                    <p>Avanza desde un valor inicial utilizando la derivada simbólica de la función.</p>
+                </div>
+                <div class="method-action">
+                    <code>x_next = x - f(x) / f'(x)</code>
+                    <a href="{{ url_for('calculator') }}?method=newton">Usar método</a>
+                </div>
+            </article>
+            <article class="method-row">
+                <span class="method-number">04</span>
+                <div>
+                    <p class="method-type">Método abierto</p>
+                    <h3>Secante</h3>
+                    <p>Usa dos aproximaciones iniciales para estimar una nueva raíz sin derivar.</p>
+                </div>
+                <div class="method-action">
+                    <code>x_next = x1 - f(x1)(x1 - x0) / (f(x1) - f(x0))</code>
+                    <a href="{{ url_for('calculator') }}?method=secant">Usar método</a>
+                </div>
+            </article>
+            <article class="method-row">
+                <span class="method-number">05</span>
+                <div>
+                    <p class="method-type">Método abierto</p>
+                    <h3>Müller</h3>
+                    <p>Usa tres valores iniciales para aproximar una raíz real con una parábola.</p>
+                </div>
+                <div class="method-action">
+                    <code>x3 = x2 + (-2c) / D</code>
+                    <a href="{{ url_for('calculator') }}?method=muller">Usar método</a>
+                </div>
+            </article>
+            <article class="method-row">
+                <span class="method-number">06</span>
+                <div>
+                    <p class="method-type">Método abierto</p>
+                    <h3>Raíces Múltiples</h3>
+                    <p>Busca valores iniciales automáticamente y crea una tabla por cada raíz sugerida.</p>
+                </div>
+                <div class="method-action">
+                    <code>xr = xi - f(xi)f'(xi) / (f'(xi)^2 - f(xi)f''(xi))</code>
+                    <a href="{{ url_for('calculator') }}?method=multiple_roots">Usar método</a>
+                </div>
+            </article>
+            <article class="method-row">
+                <span class="method-number">07</span>
+                <div>
+                    <p class="method-type">Interpolación</p>
+                    <h3>Interpolación Lineal</h3>
+                    <p>Estima un valor intermedio mediante la recta que une dos puntos conocidos.</p>
+                </div>
+                <div class="method-action">
+                    <code>y = y1 + ((x - x1)(y2 - y1)) / (x2 - x1)</code>
+                    <a href="{{ url_for('calculator') }}?method=linear_interpolation">Usar método</a>
+                </div>
+            </article>
+            <article class="method-row">
+                <span class="method-number">08</span>
+                <div>
+                    <p class="method-type">Interpolación</p>
+                    <h3>Interpolación de Lagrange</h3>
+                    <p>Evalúa P(x) combinando los polinomios base obtenidos de dos puntos.</p>
+                </div>
+                <div class="method-action">
+                    <code>P(x) = y0·L0 + y1·L1</code>
+                    <a href="{{ url_for('calculator') }}?method=lagrange_interpolation">Usar método</a>
+                </div>
+            </article>
         </div>
     </div>
 </section>
 {% endblock %}
-

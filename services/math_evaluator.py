@@ -324,6 +324,62 @@ class MathEvaluator:
 
         return value
 
+    @classmethod
+    @lru_cache(maxsize=128)
+    def first_derivative(cls, expression: str) -> sp.Expr:
+        """Return the symbolic first derivative of an already restricted expression."""
+        return sp.diff(cls.parse(expression), cls._x)
+
+    def evaluate_first_derivative(self, expression: str, x: float) -> float:
+        try:
+            evaluated = self.first_derivative(expression).subs(
+                self._x, sp.Float(x)
+            ).evalf()
+            if evaluated.is_real is False:
+                raise MathExpressionError("El resultado de la derivada no es real.")
+            value = float(evaluated)
+        except MathExpressionError:
+            raise
+        except Exception as exc:
+            raise MathExpressionError(
+                "La derivada no se pudo evaluar para el valor indicado."
+            ) from exc
+
+        if not math.isfinite(value):
+            raise MathExpressionError("El resultado de la derivada no es finito.")
+
+        return value
+
+    @classmethod
+    @lru_cache(maxsize=128)
+    def second_derivative(cls, expression: str) -> sp.Expr:
+        """Return the symbolic second derivative of a restricted expression."""
+        return sp.diff(cls.parse(expression), cls._x, 2)
+
+    def evaluate_second_derivative(self, expression: str, x: float) -> float:
+        try:
+            evaluated = self.second_derivative(expression).subs(
+                self._x, sp.Float(x)
+            ).evalf()
+            if evaluated.is_real is False:
+                raise MathExpressionError(
+                    "El resultado de la segunda derivada no es real."
+                )
+            value = float(evaluated)
+        except MathExpressionError:
+            raise
+        except Exception as exc:
+            raise MathExpressionError(
+                "La segunda derivada no se pudo evaluar para el valor indicado."
+            ) from exc
+
+        if not math.isfinite(value):
+            raise MathExpressionError(
+                "El resultado de la segunda derivada no es finito."
+            )
+
+        return value
+
     def sample(
         self, expression: str, start: float, end: float, amount: int = 141
     ) -> list[dict[str, float]]:

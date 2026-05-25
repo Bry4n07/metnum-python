@@ -1,10 +1,16 @@
-# MetNum Python - Primera fase
+# MetNum Python
 
-Nueva base del proyecto de Métodos Numéricos con Flask, HTML, CSS, JavaScript,
-Chart.js y SymPy. Esta fase implementa únicamente:
+Nueva base del proyecto de Métodos Numéricos con Flask, HTML, CSS, JavaScript
+y SymPy. Actualmente implementa:
 
 - Bisección.
 - Regla Falsa.
+- Newton.
+- Secante.
+- Müller.
+- Raíces Múltiples.
+- Interpolación Lineal.
+- Interpolación de Lagrange.
 
 Los dos métodos fueron portados desde:
 
@@ -41,9 +47,29 @@ Abrir `http://127.0.0.1:5000/` o `http://127.0.0.1:5000/calculadora`.
 }
 ```
 
-La respuesta siempre incluye `success`, `method`, `root`, `tolerance`,
-`iterations`, `message` y `steps`. Para la interfaz también se incluyen
-`chart_points`, evaluados por el backend.
+Los métodos de una sola aproximación responden con `success`, `method`,
+`root`, `tolerance`, `iterations`, `message` y `steps`. Raíces Múltiples
+responde con `function`, `derivative`, `second_derivative`, `search_table`,
+`suggested_roots`, `tables`, `final_roots` y `chart_points`, además de su
+estado, tolerancia y mensaje. Cada tabla contiene su `initial_xi`, `final_xr`
+y filas de iteración.
+
+Newton calcula su derivada simbólicamente con SymPy a partir de la función
+ingresada. Secante recibe dos valores iniciales, `x0` y `x1`. Müller recibe
+`x0`, `x1` y `x2`, y obtiene únicamente raíces reales con su aproximación
+cuadrática. Raíces Múltiples no solicita valores iniciales: recorre `[-9, 9]` con paso `1`,
+detecta hasta cuatro valores sugeridos y usa `f'(x)` y `f''(x)` simbólicas
+en una tabla por candidato. Su gráfica XY muestra la línea `f(x)` y puntos
+en los resultados finales `(xr, f(xr))`. Cuando se detecta un intervalo con
+cambio de signo, sus dos extremos se usan como `xi` independientes; no se
+calcula un punto medio.
+
+Interpolación Lineal y Lagrange reciben directamente los valores de dos
+puntos y el `x` a evaluar; no solicitan una función, tolerancia ni máximo de
+iteraciones. Ambas responden con `success`, `method`, `x`, `result`, `message`
+y `procedure` para presentar fórmula, sustitución, desarrollo y resultado.
+Se conserva una fila de `steps` como dato de compatibilidad de la API, pero
+la interfaz presenta el procedimiento en bloques matemáticos, no en tabla.
 
 ## Probar
 

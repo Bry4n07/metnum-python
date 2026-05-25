@@ -2,91 +2,189 @@
 {% block title %}Calculadora{% endblock %}
 
 {% block content %}
-<section class="calculator-hero">
+<section class="solver-header">
     <div class="container">
-        <p class="eyebrow">Calculadora única</p>
-        <h1>Encuentra raíces y revisa cada iteración</h1>
-        <p>Selecciona un método; el formulario adapta sus datos y el backend devuelve el cálculo en JSON.</p>
+        <p class="kicker">Calculadora numérica</p>
+        <h1>Calcula y examina cada aproximación</h1>
+        <p>Todos los métodos disponibles trabajan desde este mismo formulario.</p>
     </div>
 </section>
 
-<section class="calculator-section">
+<section class="solver-area">
     <div class="container">
-        <div class="workbench">
-            <aside class="form-panel card">
-                <div class="card-heading">
-                    <h2>Parámetros</h2>
-                    <span class="phase-pill">Fase 1</span>
+        <section class="control-card card">
+            <div class="control-heading">
+                <div>
+                    <p class="overline">Entrada</p>
+                    <h2>Define tu función y parámetros</h2>
                 </div>
-                <form id="calculation-form">
-                    <label class="field">
+                <span class="kind-pill" id="method-kind">Método cerrado</span>
+            </div>
+
+            <form id="calculation-form">
+                <div class="form-layout">
+                    <label class="field method-field">
                         <span>Método</span>
                         <select id="method" name="method">
-                            <optgroup label="Métodos cerrados">
-                                <option value="bisection">Bisección</option>
-                                <option value="false_position">Regla Falsa</option>
-                            </optgroup>
-                            <optgroup label="Métodos abiertos (próxima fase)">
-                                <option disabled>Newton-Raphson</option>
-                                <option disabled>Secante</option>
-                                <option disabled>Raíces Múltiples</option>
-                            </optgroup>
+                            <option value="bisection">Bisección</option>
+                            <option value="false_position">Regla Falsa</option>
+                            <option value="newton">Newton</option>
+                            <option value="secant">Secante</option>
+                            <option value="multiple_roots">Raíces Múltiples</option>
+                            <option value="muller">Müller</option>
+                            <option value="linear_interpolation">Interpolación Lineal</option>
+                            <option value="lagrange_interpolation">Interpolación de Lagrange</option>
                         </select>
                     </label>
 
-                    <div class="method-description" id="method-description"></div>
-
-                    <label class="field">
+                    <label class="field function-field">
                         <span>Función f(x)</span>
-                        <input id="function" name="function" type="text" value="x^3 - x - 2" required autocomplete="off">
-                        <small>Usa: sin(x), cos(x), tan(x), sqrt(x), log(x), exp(x), x^2 o pow(x,2).</small>
+                        <input id="function" name="function" type="text" placeholder="Ej: x^3 - x - 2" required autocomplete="off">
                     </label>
 
-                    <div class="input-grid" id="dynamic-fields"></div>
-
-                    <div class="input-grid">
-                        <label class="field">
-                            <span>Tolerancia</span>
-                            <input id="tolerance" name="tolerance" type="number" value="0.001" min="0.000000001" step="any">
-                        </label>
-                        <label class="field">
-                            <span>Máx. iteraciones</span>
-                            <input id="max_iterations" name="max_iterations" type="number" value="100" min="1" max="1000" step="1">
-                        </label>
+                    <div class="method-description" id="method-info">
+                        <div id="method-description"></div>
+                        <p class="syntax-note" id="syntax-note">Admite sin(x), cos(x), tan(x), sqrt(x), log(x), exp(x), x^2 y pow(x,2).</p>
                     </div>
+                    <div class="dynamic-fields" id="dynamic-fields"></div>
 
-                    <button class="button primary calculate-button" type="submit" id="submit-button">
-                        Calcular raíz
-                    </button>
-                </form>
-            </aside>
+                    <label class="field tolerance-field">
+                        <span>Tolerancia</span>
+                        <input id="tolerance" name="tolerance" type="number" placeholder="Ej: 0.001" min="0.000000001" step="any">
+                    </label>
+                    <label class="field iteration-field">
+                        <span>Máx. iteraciones</span>
+                        <input id="max_iterations" name="max_iterations" type="number" placeholder="Ej: 100" min="1" max="1000" step="1">
+                    </label>
+                    <div class="field action-field">
+                        <span>Acción</span>
+                        <button class="button primary calculate-button" type="submit" id="submit-button">Calcular raíz</button>
+                    </div>
+                </div>
+            </form>
+        </section>
 
-            <div class="result-column">
-                <section class="result-panel card" aria-live="polite">
-                    <div class="card-heading">
+        <div class="output-grid">
+            <section class="result-panel card" aria-live="polite">
+                <div class="card-heading">
+                    <div>
+                        <p class="overline">Salida</p>
                         <h2>Resultado</h2>
-                        <span id="result-badge" class="status-badge neutral">Sin cálculo</span>
                     </div>
-                    <div id="result-summary" class="empty-state">
-                        Ingresa los datos y presiona <strong>Calcular raíz</strong>.
-                    </div>
-                </section>
+                    <span id="result-badge" class="status-badge neutral">Sin cálculo</span>
+                </div>
+                <div id="result-summary" class="empty-state">
+                    Ingresa los datos y presiona <strong>Calcular</strong>.
+                </div>
+            </section>
 
-                <section class="chart-panel card">
-                    <div class="card-heading">
-                        <h2>Gráfica de f(x)</h2>
-                        <span class="muted">Chart.js</span>
-                    </div>
-                    <div id="chart-empty" class="empty-chart">La gráfica aparecerá después de calcular.</div>
-                    <canvas id="function-chart" hidden aria-label="Gráfica de la función"></canvas>
-                </section>
-            </div>
+            <aside class="interval-note">
+                <p class="overline" id="method-note-label">Condición inicial</p>
+                <h2 id="method-note-title">Cambio de signo</h2>
+                <p id="method-note-intro">Para aplicar Bisección o Regla Falsa se debe cumplir:</p>
+                <code id="method-note-formula">f(a) · f(b) &lt; 0</code>
+                <p id="method-note-detail">Si el intervalo no cumple la condición, el cálculo se detiene antes de iterar.</p>
+            </aside>
         </div>
 
-        <section class="steps-panel card">
+        <section class="procedure-panel card" id="interpolation-procedure-panel" hidden>
             <div class="card-heading">
-                <h2>Tabla de iteraciones</h2>
-                <span id="steps-count" class="muted">0 filas</span>
+                <div>
+                    <p class="overline">Procedimiento</p>
+                    <h2 id="procedure-title">Interpolación</h2>
+                </div>
+                <span class="row-count">Cálculo directo</span>
+            </div>
+            <div class="procedure-grid" id="procedure-blocks">
+                <div class="empty-state">Realiza una interpolación para ver el procedimiento matemático.</div>
+            </div>
+        </section>
+
+        <div id="multiple-results-panel" hidden>
+            <section class="derivatives-panel card">
+                <div class="card-heading">
+                    <div>
+                        <p class="overline">Expresiones</p>
+                        <h2>Función y derivadas</h2>
+                    </div>
+                </div>
+                <div class="derivatives-grid">
+                    <div><span>f(x)</span><code id="function-expression">-</code></div>
+                    <div><span>f'(x)</span><code id="derivative-expression">-</code></div>
+                    <div><span>f''(x)</span><code id="second-derivative-expression">-</code></div>
+                </div>
+            </section>
+
+            <section class="steps-panel card search-panel">
+                <div class="card-heading">
+                    <div>
+                        <p class="overline">Búsqueda automática</p>
+                        <h2>Valores de -9 a 9</h2>
+                    </div>
+                    <span id="suggestions-count" class="row-count">0 xi sugeridos</span>
+                </div>
+                <div class="table-wrapper search-table-wrapper">
+                    <table id="search-table">
+                        <thead>
+                            <tr>
+                                <th>x</th>
+                                <th>f(x)</th>
+                                <th>Signo</th>
+                                <th>Intervalo / raíz exacta</th>
+                                <th>xi sugerido</th>
+                                <th>n</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <div id="multiple-tables" class="multiple-tables"></div>
+
+            <section class="steps-panel card roots-summary-panel">
+                <div class="card-heading">
+                    <div>
+                        <p class="overline">Resumen</p>
+                        <h2>Resultados finales</h2>
+                    </div>
+                    <span id="multiple-tables-count" class="row-count">0 tablas</span>
+                </div>
+                <div class="table-wrapper summary-table-wrapper">
+                    <table id="roots-summary-table">
+                        <thead>
+                            <tr>
+                                <th>Tabla</th>
+                                <th>xr final</th>
+                                <th>y = f(xr final)</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <section class="chart-panel card" id="multiple-roots-chart-panel" hidden>
+            <div class="card-heading">
+                <div>
+                    <p class="overline">Gráfica XY</p>
+                    <h2>Función y raíces finales</h2>
+                </div>
+                <span class="row-count">Raíces Múltiples</span>
+            </div>
+            <div class="chart-frame">
+                <canvas id="multiple-roots-chart" aria-label="Gráfica de la función y los xr finales detectados"></canvas>
+            </div>
+        </section>
+
+        <section class="steps-panel card" id="single-steps-panel">
+            <div class="card-heading">
+                <div>
+                    <p class="overline">Iteraciones</p>
+                    <h2>Tabla de iteraciones</h2>
+                </div>
+                <span id="steps-count" class="row-count">0 filas</span>
             </div>
             <div class="table-wrapper">
                 <table id="steps-table">
@@ -102,7 +200,6 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 {% endblock %}
-
