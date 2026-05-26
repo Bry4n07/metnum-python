@@ -12,8 +12,8 @@ const methods = {
             detail: "Si el intervalo no cumple la condición, el cálculo se detiene antes de iterar.",
         },
         fields: [
-            { key: "a", label: "Límite inferior (a / xi)", placeholder: "Ej: 0" },
-            { key: "b", label: "Límite superior (b / xu)", placeholder: "Ej: 2" },
+            { key: "a", label: "a", placeholder: "Ej: 0" },
+            { key: "b", label: "b", placeholder: "Ej: 2" },
         ],
     },
     false_position: {
@@ -29,8 +29,8 @@ const methods = {
             detail: "Si el intervalo no cumple la condición, el cálculo se detiene antes de iterar.",
         },
         fields: [
-            { key: "a", label: "Límite inferior (a / xi)", placeholder: "Ej: 0" },
-            { key: "b", label: "Límite superior (b / xu)", placeholder: "Ej: 2" },
+            { key: "a", label: "a", placeholder: "Ej: 0" },
+            { key: "b", label: "b", placeholder: "Ej: 2" },
         ],
     },
     newton: {
@@ -62,7 +62,7 @@ const methods = {
             detail: "El cálculo se detiene si la diferencia de funciones es cero.",
         },
         fields: [
-            { key: "x0", label: "Valor anterior (xᵢ₋₁)", placeholder: "Ej: 1" },
+            { key: "x0", label: "Valor anterior (x_1)", placeholder: "Ej: 1" },
             { key: "x1", label: "Valor actual (xi)", placeholder: "Ej: 2" },
         ],
     },
@@ -175,9 +175,9 @@ const columnsByMethod = {
     ],
     secant: [
         { key: "iteration", label: "i" },
-        { key: "x0", label: "xᵢ₋₁" },
+        { key: "x0", label: "x_1" },
         { key: "x1", label: "xi" },
-        { key: "fx0", label: "f(xᵢ₋₁)" },
+        { key: "fx0", label: "f(x_1)" },
         { key: "fx1", label: "f(xi)" },
         { key: "x_next", label: "xr" },
         { key: "error", label: "T" },
@@ -809,8 +809,8 @@ if (form) {
         calculationVersion += 1;
         submitButton.disabled = false;
         functionInput.value = "";
-        toleranceInput.value = "";
-        maximumIterationsInput.value = "";
+        toleranceInput.value = "0.001";
+        maximumIterationsInput.value = "100";
         renderFields(methodSelect.value);
     });
     form.addEventListener("submit", calculate);
